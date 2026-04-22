@@ -1,0 +1,171 @@
+# 📋 Detailed Findings Report
+## Bitcoin Fear & Greed vs Hyperliquid Trader Performance
+
+**Dataset:** 211,224 trades · 32 traders · 246 coins · May 2023 – May 2025  
+**Analysis date:** May 2025
+
+---
+
+## 1. Data Overview
+
+The dataset covers two years of live trading activity on the Hyperliquid decentralised exchange, merged with the daily Bitcoin Fear & Greed Index. Each trade is classified under one of five sentiment regimes based on the index value on that trading day.
+
+| Regime | Index Range | Trades | % of Total |
+|---|---|---|---|
+| Extreme Fear | 0–24 | 21,400 | 10.1% |
+| Fear | 25–44 | 61,837 | 29.3% |
+| Neutral | 45–55 | 37,692 | 17.8% |
+| Greed | 56–74 | 50,303 | 23.8% |
+| Extreme Greed | 75–100 | 39,992 | 18.9% |
+
+**Observation:** Fear dominates (29.3%) — consistent with Bitcoin's historical tendency to spend more time in bearish sentiment. Extreme Fear is rarest (10.1%), suggesting it is a short-lived but intense regime.
+
+---
+
+## 2. Core Performance Metrics
+
+### 2.1 Win Rate by Sentiment
+
+| Sentiment | Win Rate | vs. Overall (41.1%) |
+|---|---|---|
+| Extreme Fear | 37.1% | −4.0 pp |
+| Fear | 42.1% | +1.0 pp |
+| Neutral | 39.7% | −1.4 pp |
+| Greed | 38.5% | −2.6 pp |
+| **Extreme Greed** | **46.5%** | **+5.4 pp** |
+
+**Key takeaway:** Extreme Greed produces a win rate 9.4 percentage points higher than Extreme Fear. The market's most euphoric periods are — counterintuitively — the most reliably profitable for these traders.
+
+### 2.2 Average PnL per Trade
+
+| Sentiment | Avg PnL | Median PnL |
+|---|---|---|
+| Extreme Fear | $34.54 | $0.00 |
+| Fear | $54.29 | $0.00 |
+| Neutral | $35.43 | $0.00 |
+| Greed | $42.74 | $0.00 |
+| **Extreme Greed** | **$67.89** | **$0.00** |
+
+The universal $0.00 median confirms the dataset is heavily skewed — most trades result in zero or near-zero PnL (flat closes, partial fills, or very small positions). The mean is driven by a relatively small number of large winning trades.
+
+### 2.3 Total PnL by Sentiment
+
+| Sentiment | Total PnL | Share of Total |
+|---|---|---|
+| Fear | $3,357,155 | 32.6% |
+| Extreme Greed | $2,715,171 | 26.4% |
+| Greed | $2,150,129 | 20.9% |
+| Neutral | $1,335,393 | 13.0% |
+| Extreme Fear | $739,110 | 7.2% |
+
+Fear generates the most total PnL in absolute terms — not because of superior per-trade quality, but because it contains the most trades (29.3% of volume). Extreme Greed punches well above its weight: 18.9% of trades but 26.4% of total PnL.
+
+---
+
+## 3. Directional Analysis (LONG vs SHORT)
+
+### Avg PnL by Direction and Sentiment
+
+Across all sentiments, LONG positions generate higher average PnL than SHORT positions. This is consistent with the overall bullish bias of the 2023–2025 period (Bitcoin rose from ~$27K to ~$95K).
+
+**Notable patterns:**
+- During **Extreme Greed**, LONG positions show the strongest outperformance — momentum traders riding the bull phase are rewarded.
+- During **Extreme Fear**, SHORT positions show relatively better performance as selling pressure is highest.
+- The crossover point (where SHORT outperforms LONG) roughly coincides with Fear → Extreme Fear transitions.
+
+**Recommendation:** Bias towards LONG during Greed/Extreme Greed. Consider SHORT exposure during Extreme Fear, but with tight stop-losses given the mean-reversion risk.
+
+---
+
+## 4. Temporal Analysis
+
+### 4.1 Best Trading Hours (IST)
+
+The hour-of-day heatmap reveals that PnL is not uniformly distributed throughout the day. Generally:
+- **Late evening IST (20:00–23:00)** tends to show better PnL across most sentiment regimes, coinciding with US market hours.
+- **Early morning IST (01:00–06:00)** shows mixed results — lower liquidity periods.
+- During **Extreme Greed**, afternoon hours (14:00–17:00 IST) also perform well.
+
+### 4.2 Monthly Seasonality
+
+The monthly heatmap shows clear clusters of profitable and losing months:
+- Strong positive months tend to cluster around Bitcoin bull run phases (Q4 2023, Q1 2024, Q4 2024).
+- Negative months align with correction periods.
+
+---
+
+## 5. Trader Analysis
+
+### 5.1 Performance Consistency
+
+Of the 32 traders in the dataset, performance is highly concentrated — the top 5 traders by PnL account for a disproportionate share of total profits.
+
+The trader heatmap (Chart 11) reveals three distinct trader archetypes:
+
+1. **All-Weather Traders:** Green across all 5 sentiment columns. These traders have either diversified strategies or strong risk management that works regardless of market mood.
+
+2. **Greed Specialists:** Strong performance in Greed/Extreme Greed, weaker in Fear periods. Likely momentum/trend-following strategies.
+
+3. **Fear Hunters:** Relative outperformance during Fear/Extreme Fear. Possibly contrarian or mean-reversion traders.
+
+Understanding which archetype a trader belongs to can inform sentiment-based position sizing.
+
+### 5.2 Top Performer Observations
+
+- The single best performer overall shows consistent profits across all sentiment regimes, suggesting a market-neutral or delta-hedged strategy.
+- The best performer during **Extreme Fear** specifically is not the same as the best overall performer — showing that different strategies are optimal in different regimes.
+- During **Extreme Greed**, the top traders show notably larger trade sizes (Size USD), suggesting confidence/leverage scaling in bull conditions.
+
+---
+
+## 6. Statistical Significance
+
+### 6.1 Kruskal-Wallis Test
+
+- **H = 1225.98, p ≈ 3.7 × 10⁻²⁶⁴**
+- The PnL distributions are **highly significantly different** across sentiment groups.
+- This is one of the strongest statistical results possible — the relationship is not noise.
+
+### 6.2 Pearson Correlation
+
+- **r = 0.006, p = 0.006**
+- A tiny but statistically significant positive correlation: higher sentiment scores associate very slightly with higher individual trade PnL.
+- The weakness of r confirms the relationship is **non-linear** — sentiment's impact on PnL is better captured at the regime level than as a continuous linear predictor.
+
+### 6.3 Pairwise Mann-Whitney Tests
+
+All pairwise comparisons between sentiment groups are statistically significant (p < 0.05), confirming that each sentiment regime has a genuinely distinct PnL distribution — not just noise.
+
+---
+
+## 7. Key Risks & Limitations
+
+1. **Small trader count (32):** The patterns may not generalise — a larger sample of traders would increase confidence.
+2. **Survivorship bias:** We only see traders who were active enough to have records. Blown-up accounts may be missing.
+3. **Correlation ≠ causation:** Sentiment and PnL are correlated, but sentiment may be a proxy for volatility, trend strength, or other market microstructure factors.
+4. **Median PnL = $0:** Most trades have zero closed PnL, inflating trade counts without contributing signal. Analysis of "active" trades only (PnL ≠ 0) could yield sharper insights.
+5. **IST timezone:** Fear & Greed Index is daily — some trades near midnight IST may be assigned to the "wrong" day's sentiment.
+
+---
+
+## 8. Actionable Recommendations
+
+| # | Recommendation | Based On |
+|---|---|---|
+| 1 | Scale up position size during Extreme Greed | Highest win rate (46.5%) + avg PnL ($67.89) |
+| 2 | Reduce exposure / tighten stops during Extreme Fear | Lowest win rate (37.1%) + avg PnL ($34.54) |
+| 3 | Bias LONG in Greed regimes, SHORT in Fear regimes | Direction × sentiment analysis (Chart 6) |
+| 4 | Trade more actively in US hours (20:00–23:00 IST) | Hour heatmap (Chart 5) |
+| 5 | Monitor Fear→Greed transitions for momentum entries | Cumulative PnL inflection points (Chart 4) |
+| 6 | Study all-weather traders for strategy inspiration | Trader heatmap (Chart 11) |
+| 7 | Focus on coins that consistently lead in each regime | Top coins chart (Chart 8) |
+
+---
+
+## 9. Suggested Next Steps
+
+- **Sentiment lag analysis:** Does today's sentiment predict tomorrow's PnL better than same-day sentiment?
+- **Volatility overlay:** Add realised volatility (e.g. BTC 30-day vol) to separate sentiment from volatility effects.
+- **ML prediction model:** Use FG value + day-of-week + hour + coin as features to predict trade outcome (profit/loss).
+- **Live dashboard:** Stream real-time Fear & Greed index and flag regime changes for traders.
+- **Leverage analysis:** Cross-examine leverage levels with sentiment to understand if traders increase leverage in Greed — and whether that's justified.
